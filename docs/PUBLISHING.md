@@ -4,6 +4,27 @@ Publishing Etcher
 This is a small guide to package and publish Etcher to all supported operating
 systems.
 
+Release Types
+-------------
+
+Etcher supports **production** and **snapshot** releases. Each is published to
+a different S3 bucket, and production releases are code signed, while snapshot
+releases aren't and include a short git commit-hash as a build number. For
+example, `1.0.0-beta.19` is a production release, while `1.0.0-beta.19+531ab82`
+is a snapshot release.
+
+In terms of comparison: `1.0.0-beta.19` (production) < `1.0.0-beta.19+531ab82`
+(snapshot) < `1.0.0` (production) < `1.0.0+2201e5f` (snapshot).
+
+The build system creates snapshot releases by default, but you can build a
+specific release type by setting the `RELEASE_TYPE` environment variable. For
+example:
+
+```sh
+make <target> RELEASE_TYPE=snapshot
+make <target> RELEASE_TYPE=production
+```
+
 Signing
 -------
 
@@ -29,39 +50,30 @@ employee by asking for it from the relevant people.
 Packaging
 ---------
 
+The resulting installers will be saved to `release/out`.
+
+Run the following commands:
 
 ### OS X
-
-Run the following command:
 
 ```sh
 make electron-installer-dmg
 make electron-installer-app-zip
 ```
 
-The resulting installers will be saved to `release/out`.
-
 ### GNU/Linux
-
-Run the following command:
 
 ```sh
 make electron-installer-appimage
 make electron-installer-debian
 ```
 
-The resulting installers will be saved to `release/out`.
-
 ### Windows
-
-Run the following command:
 
 ```sh
 make electron-installer-zip
 make electron-installer-nsis
 ```
-
-The resulting installers will be saved to `etcher-release/installers`.
 
 Publishing to Bintray
 ---------------------
@@ -76,7 +88,7 @@ Make sure you set the following environment variables:
 Run the following command:
 
 ```sh
-make publish-bintray-debian RELEASE_TYPE=<production|snapshot>
+make publish-bintray-debian
 ```
 
 Publishing to S3
@@ -91,7 +103,7 @@ Run the following command to publish all files for the current combination of
 _platform_ and _arch_ (building them if necessary):
 
 ```sh
-make publish-aws-s3 RELEASE_TYPE=<production|snapshot>
+make publish-aws-s3
 ```
 
 Also add links to each AWS S3 file in [GitHub Releases][github-releases]. See

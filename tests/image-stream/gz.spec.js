@@ -49,6 +49,7 @@ describe('ImageStream: GZ', function() {
       return imageStream.getImageMetadata(image).then((metadata) => {
         m.chai.expect(metadata).to.deep.equal({
           path: image,
+          stream: null,
           size: {
             original: compressedSize,
             final: {

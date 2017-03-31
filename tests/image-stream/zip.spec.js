@@ -72,6 +72,7 @@ describe('ImageStream: ZIP', function() {
       return imageStream.getImageMetadata(image).then((metadata) => {
         m.chai.expect(metadata).to.deep.equal({
           path: image,
+          stream: null,
           size: {
             original: expectedSize,
             final: {

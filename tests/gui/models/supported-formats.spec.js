@@ -23,7 +23,7 @@ describe('Browser: SupportedFormats', function() {
 
       it('should return the supported compressed extensions', function() {
         const extensions = SupportedFormatsModel.getCompressedExtensions();
-        m.chai.expect(extensions).to.deep.equal([ 'gz', 'bz2', 'xz', 'dmg' ]);
+        m.chai.expect(extensions).to.deep.equal([ 'gz', 'bz2', 'xz' ]);
       });
 
     });
@@ -32,7 +32,7 @@ describe('Browser: SupportedFormats', function() {
 
       it('should return the supported non compressed extensions', function() {
         const extensions = SupportedFormatsModel.getNonCompressedExtensions();
-        m.chai.expect(extensions).to.deep.equal([ 'img', 'iso', 'dsk', 'hddimg', 'raw' ]);
+        m.chai.expect(extensions).to.deep.equal([ 'img', 'iso', 'dsk', 'hddimg', 'raw', 'dmg' ]);
       });
 
     });
@@ -60,6 +60,32 @@ describe('Browser: SupportedFormats', function() {
     });
 
     describe('.isSupportedImage()', function() {
+
+      _.forEach([
+
+        // Type: 'archive'
+        'path/to/filename.zip',
+        'path/to/filename.etch',
+
+        // Type: 'compressed'
+        'path/to/filename.img.gz',
+        'path/to/filename.img.bz2',
+        'path/to/filename.img.xz',
+
+        // Type: 'image'
+        'path/to/filename.img',
+        'path/to/filename.iso',
+        'path/to/filename.dsk',
+        'path/to/filename.hddimg',
+        'path/to/filename.raw',
+        'path/to/filename.dmg'
+
+      ], (filename) => {
+        it(`should return true for ${filename}`, function() {
+          const isSupported = SupportedFormatsModel.isSupportedImage(filename);
+          m.chai.expect(isSupported).to.be.true;
+        });
+      });
 
       it('should return false if the file has no extension', function() {
         const isSupported = SupportedFormatsModel.isSupportedImage('/path/to/foo');

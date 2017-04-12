@@ -57,7 +57,9 @@ describe('ImageStream: DMG', function() {
                 estimation: false,
                 value: uncompressedSize
               }
-            }
+            },
+            hasMBR: false,
+            hasGPT: false
           });
         });
       });
@@ -94,7 +96,9 @@ describe('ImageStream: DMG', function() {
                 estimation: false,
                 value: uncompressedSize
               }
-            }
+            },
+            hasMBR: false,
+            hasGPT: false
           });
         });
       });
